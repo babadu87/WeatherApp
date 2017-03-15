@@ -3,7 +3,10 @@ package com.example.boismorand.weatherapp;
 import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +21,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private CityAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +34,25 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<City>>(){}.getType();
         city = gson.fromJson(s,type);
         Log.i("city",city.toString());
+
+        adapter = new CityAdapter(city,new CityAdapter.OnCityListener(){
+//Ici voir pourquoi ça affiche une seule ville seulement
+            @Override
+            public void onCityClick(City city) {
+                Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCityLongClick(City city) {
+                // Ici mettre l'action quand on appuie longtemps sur l'item
+            }
+        });
+        //on chope le recycler view dans l'activity
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
+
+        recyclerView.setAdapter(adapter);
 
     }
 
