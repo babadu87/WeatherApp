@@ -19,26 +19,26 @@ public class CityHolder extends RecyclerView.ViewHolder {
         view = itemView;
         nomView = (TextView) view.findViewById(R.id.nom);
     }
-    public void bind(City city, final CityAdapter.OnCityListener listener) {
+    public void bind(final City city, final CityAdapter.OnCityListener listener) {
 
         this.city = city;
 
-        nomView.setText(this.city.getName());
+        nomView.setText(city.getName());
 
         if(listener != null){
             view.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
-                    listener.onCityClick(CityHolder.this.city);
+                    listener.onCityClick(city);
                 }
             });
-/*
-            view.setOnClickListener(new View.OnLongClickListener(){
+
+            /*view.setOnClickListener(new View.OnLongClickListener(){
 
                 @Override
                 public boolean onLongClick(View view) {
-                    listener.onCityLongClick(CityHolder.this.city);
+                    listener.onCityLongClick(city);
                     return false;
                 }
             });*/

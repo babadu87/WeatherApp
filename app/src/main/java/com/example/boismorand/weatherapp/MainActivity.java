@@ -1,5 +1,6 @@
 package com.example.boismorand.weatherapp;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,17 +31,21 @@ public class MainActivity extends AppCompatActivity {
         String s = getVilles();
 
         Gson gson = new Gson();
-        ArrayList<City> city= new ArrayList<>();
+        ArrayList<City> cities= new ArrayList<>();
         Type type = new TypeToken<ArrayList<City>>(){}.getType();
-        city = gson.fromJson(s,type);
-        Log.i("city",city.toString());
+        cities = gson.fromJson(s,type);
+        Log.i("city",cities.toString());
 
-        adapter = new CityAdapter(city,new CityAdapter.OnCityListener(){
-//Ici voir pourquoi ça affiche une seule ville seulement
-            @Override
+        adapter = new CityAdapter(cities,new CityAdapter.OnCityListener(){
+            //Ici voir pourquoi ça affiche une seule ville seulement
+           @Override
             public void onCityClick(City city) {
+                /*Intent intent = new Intent(MainActivity.this, PrintCityInfo.class);
+                intent.putExtra("city",city);
+                startActivity(intent);*/
                 Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_LONG).show();
             }
+
 
             @Override
             public void onCityLongClick(City city) {
