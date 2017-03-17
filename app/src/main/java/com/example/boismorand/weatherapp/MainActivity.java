@@ -18,9 +18,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
     private CityAdapter adapter;
 
@@ -38,12 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new CityAdapter(cities,new CityAdapter.OnCityListener(){
             //Ici voir pourquoi ça affiche une seule ville seulement
+
            @Override
             public void onCityClick(City city) {
-                /*Intent intent = new Intent(MainActivity.this, PrintCityInfo.class);
+
+                Intent intent = new Intent(MainActivity.this, InfoVilleActivity.class);
                 intent.putExtra("city",city);
-                startActivity(intent);*/
-                Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_LONG).show();
+                startActivity(intent);
+                //Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_LONG).show();
             }
 
 
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 s = sb.toString();
-                Log.i("ville",s);
+                //Log.i("ville",s);
             }
         } catch (IOException e) {
             e.printStackTrace();

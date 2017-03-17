@@ -1,6 +1,7 @@
 package com.example.boismorand.weatherapp;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityHolder>{
     @Override
     public void onBindViewHolder(CityHolder holder, int position){
         City city = items.get(position);
+        Log.i("coucou",city.toString());
         holder.bind(city,listener);
     }
     @Override
