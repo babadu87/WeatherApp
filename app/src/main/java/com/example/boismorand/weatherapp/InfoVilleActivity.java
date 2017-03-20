@@ -21,7 +21,7 @@ public class InfoVilleActivity extends Activity {
     private TextView name;
     private TextView country;
     private TextView coord;
-    //final TextView mTextView = (TextView) findViewById(R.id.text);
+    private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +34,10 @@ public class InfoVilleActivity extends Activity {
         name.setText(city.getName());
         country.setText(city.getCountry());
         coord.setText(city.getCoord().toString());
-/*
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://www.google.com";
+        final String url ="http://api.openweathermap.org/data/2.5/weather?id=6451740&appid="+API_KEY;
 
         // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -45,17 +45,17 @@ public class InfoVilleActivity extends Activity {
                             @Override
                             public void onResponse(String response) {
                                 // Display the first 500 characters of the response string.
-                                Log.i("repserveur",response.substring(0,500));
+                                Log.i("repserveur",response);
                                 //mTextView.setText("Response is: "+ response.substring(0,500));
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        mTextView.setText("That didn't work!");
+                        name.setText("Oops c'est une erreur!");
                     }
                 });
         // Add the request to the RequestQueue.
                 queue.add(stringRequest);
-                */
+
     }
 }
