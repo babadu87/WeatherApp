@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import java.util.Calendar;
 
 /**
  * Created by Latour on 17/03/2017.
@@ -40,7 +46,22 @@ public class InfoVilleActivity extends Activity {
         final String url ="http://api.openweathermap.org/data/2.5/weather?id=6451740&appid="+API_KEY;
 
         // Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                /*JsonRequest jsonRequest = new JsonRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Gson gson = new Gson();
+                                Base base = gson.fromJson(response,Base.class);
+                            }
+                         ,new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                name.setText("That didn't work! : " + error.getMessage());
+                            }
+                        });
+                        }
+
+                        (Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -54,7 +75,38 @@ public class InfoVilleActivity extends Activity {
                         name.setText("Oops c'est une erreur!");
                     }
                 });
-        // Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.*/
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        try{
+                            Gson gson = new Gson();
+                            Base base = gson.fromJson(response,Base.class);
+                            Calendar sunset = Calendar.getInstance();
+                            Calendar sunrise = Calendar.getInstance();
+                            //new DownloadImageTask((ImageView) findViewById(R.id.icon))
+                                    //.execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
+                            sunset.setTimeInMillis(base.getSys().getSunset() * 1000);
+                            sunrise.setTimeInMillis(base.getSys().getSunrise() * 1000);
+                            name.setText("Meteo desc: "+ base.getWeather().getDescription() + "\n"
+                                    + "Humidity : " + base.getMain().getHumidity() + "%\n"
+                                    + "Pressure : " + base.getMain().getPressure() + " hPa\n"
+                                    + "Temp : " + (base.getMain().getTemp() - 273.15) + " *C\n"
+                                    + "Win Speed : " + base.getWind().getSpeed() + " m/s\n"
+                                    + "Win Dir : " + (float)base.getWind().getDeg() + " (" + base.getWind().getDeg() + ") \n"
+                                    + "Lever soleil : " + sunrise.get(Calendar.HOUR_OF_DAY) + ":" + sunrise.get(Calendar.MINUTE)  + ":" + sunrise.get(Calendar.SECOND) + "\n"
+                                    + "Coucher soleil : " + sunset.get(Calendar.HOUR_OF_DAY) + ":" + sunset.get(Calendar.MINUTE)  + ":" + sunset.get(Calendar.SECOND)  + "\n");
+                        }catch (Exception error){name.setText(response + "\n" + error.getMessage());}
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                name.setText("That didn't work! : " + error.getMessage());
+            }
+        });
                 queue.add(stringRequest);
 
     }
