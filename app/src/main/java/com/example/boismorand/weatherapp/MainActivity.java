@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
         String text = newText;
-        adapter.filter(text);
+        listViewAdapter.filter(text);
         return false;
     }
 
