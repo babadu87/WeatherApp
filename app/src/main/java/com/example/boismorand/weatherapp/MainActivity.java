@@ -1,12 +1,16 @@
 package com.example.boismorand.weatherapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -18,13 +22,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
     private CityAdapter adapter;
 
+
+    //declaration des variable search view
+    ListView listView;
+    ListViewAdapter listViewAdapter;
+    SearchView searchView;
+    ArrayList <String> ListesVilles = new ArrayList <> ();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +47,29 @@ public class MainActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<City>>(){}.getType();
         cities = gson.fromJson(s,type);
         Log.i("city",cities.toString());
+        for (City city:cities) {
+            ListesVilles.add(city.getName());
+        }
+        // search view
 
+        // Localisez le ListView dans listview_main.xml
+        listView = (ListView) findViewById (R.id.listview);
+        // résultats Passe à ListViewAdapter Classe
+        listViewAdapter = new ListViewAdapter(this, ListesVilles);
+
+        // Associe l'adaptateur à l'ListView
+
+        listView.setAdapter (listViewAdapter);
+
+        // Localisez le EditText dans listview_main.xml
+        searchView = (SearchView) findViewById (R.id.search);
+        searchView.setOnQueryTextListener(this);
+
+
+       /*
+
+        String test = "Forville";
+        Log.i("test",""+ListesVilles.contains(test));*/
         adapter = new CityAdapter(cities,new CityAdapter.OnCityListener(){
             //Ici voir pourquoi ça affiche une seule ville seulement
 
@@ -62,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+    }
+
+    // fonction pour search view
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        adapter.filter(text);
+        return false;
     }
 
     /**

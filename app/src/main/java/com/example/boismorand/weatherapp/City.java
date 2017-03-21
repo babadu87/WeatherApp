@@ -17,6 +17,10 @@ public class City  implements Parcelable {
     private String country;
     private Coord coord ;
 
+    public City(String name){
+        this.name = name;
+    }
+
     public City(int id, String name, String country, Coord coord) {
         this.id = id;
         this.name = name;

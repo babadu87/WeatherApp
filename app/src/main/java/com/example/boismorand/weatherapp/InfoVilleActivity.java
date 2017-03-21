@@ -57,7 +57,7 @@ public class InfoVilleActivity extends Activity {
                             Base base = gson.fromJson(response,Base.class);
                             Calendar sunset = Calendar.getInstance();
                             Calendar sunrise = Calendar.getInstance();
-                            new DownloadImageTask((ImageView) findViewById(R.id.icon)).execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
+                            //new DownloadImageTask((ImageView) findViewById(R.id.icon)).execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
                             sunset.setTimeInMillis(base.getSys().getSunset() * 1000);
                             sunrise.setTimeInMillis(base.getSys().getSunrise() * 1000);
                             name.setText("Meteo desc: "+ base.getWeather().get(0).getDescription() + "\n"
