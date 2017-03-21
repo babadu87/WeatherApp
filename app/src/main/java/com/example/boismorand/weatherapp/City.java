@@ -3,12 +3,15 @@ package com.example.boismorand.weatherapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by boismorand on 03/03/2017.
  */
 
 public class City  implements Parcelable {
 
+    @SerializedName("_id")
     private int id;
     private String name;
     private String country;

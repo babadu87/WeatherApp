@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -32,7 +33,7 @@ public class InfoVilleActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_infos);
-        City city = getIntent().getParcelableExtra("city");
+        final City city = getIntent().getParcelableExtra("city");
         name = (TextView) findViewById(R.id.name);
         country = (TextView) findViewById(R.id.country);
         coord = (TextView) findViewById(R.id.coord);
@@ -43,39 +44,8 @@ public class InfoVilleActivity extends Activity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url ="http://api.openweathermap.org/data/2.5/weather?id=6451740&appid="+API_KEY;
+        final String url ="http://api.openweathermap.org/data/2.5/weather?id="+city.getId()+"&appid="+API_KEY;
 
-        // Request a string response from the provided URL.
-                /*JsonRequest jsonRequest = new JsonRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Gson gson = new Gson();
-                                Base base = gson.fromJson(response,Base.class);
-                            }
-                         ,new Response.ErrorListener(){
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                name.setText("That didn't work! : " + error.getMessage());
-                            }
-                        });
-                        }
-
-                        (Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                Log.i("repserveur",response);
-                                //mTextView.setText("Response is: "+ response.substring(0,500));
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        name.setText("Oops c'est une erreur!");
-                    }
-                });
-        // Add the request to the RequestQueue.*/
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -87,16 +57,15 @@ public class InfoVilleActivity extends Activity {
                             Base base = gson.fromJson(response,Base.class);
                             Calendar sunset = Calendar.getInstance();
                             Calendar sunrise = Calendar.getInstance();
-                            //new DownloadImageTask((ImageView) findViewById(R.id.icon))
-                                    //.execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
+                            new DownloadImageTask((ImageView) findViewById(R.id.icon)).execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
                             sunset.setTimeInMillis(base.getSys().getSunset() * 1000);
                             sunrise.setTimeInMillis(base.getSys().getSunrise() * 1000);
-                            name.setText("Meteo desc: "+ base.getWeather().getDescription() + "\n"
+                            name.setText("Meteo desc: "+ base.getWeather().get(0).getDescription() + "\n"
                                     + "Humidity : " + base.getMain().getHumidity() + "%\n"
                                     + "Pressure : " + base.getMain().getPressure() + " hPa\n"
-                                    + "Temp : " + (base.getMain().getTemp() - 273.15) + " *C\n"
+                                    + "Temp : " + (base.getMain().getTemp() - 273.15) + " °C\n"
                                     + "Win Speed : " + base.getWind().getSpeed() + " m/s\n"
-                                    + "Win Dir : " + (float)base.getWind().getDeg() + " (" + base.getWind().getDeg() + ") \n"
+                                    + "Win Dir : " + base.getWind().getDeg() + " (" + base.getWind().getDeg() + ") \n"
                                     + "Lever soleil : " + sunrise.get(Calendar.HOUR_OF_DAY) + ":" + sunrise.get(Calendar.MINUTE)  + ":" + sunrise.get(Calendar.SECOND) + "\n"
                                     + "Coucher soleil : " + sunset.get(Calendar.HOUR_OF_DAY) + ":" + sunset.get(Calendar.MINUTE)  + ":" + sunset.get(Calendar.SECOND)  + "\n");
                         }catch (Exception error){name.setText(response + "\n" + error.getMessage());}
@@ -104,7 +73,7 @@ public class InfoVilleActivity extends Activity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                name.setText("That didn't work! : " + error.getMessage());
+                Toast.makeText(InfoVilleActivity.this, "Erreur", Toast.LENGTH_LONG).show();
             }
         });
                 queue.add(stringRequest);

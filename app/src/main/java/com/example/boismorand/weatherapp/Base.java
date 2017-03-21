@@ -1,5 +1,7 @@
 package com.example.boismorand.weatherapp;
 
+import java.util.ArrayList;
+
 /**
  * Created by Latour on 20/03/2017.
  */
@@ -12,11 +14,17 @@ public class Base {
     private int cod;
 
     private Coord coord;
-    private Weather weather;
+    private ArrayList <Weather> weather;
     private Main main;
     private Wind wind;
     private Clouds clouds;
     private Sys sys;
+
+    public Base(){
+        this.weather = new ArrayList<>();
+    }
+
+
 
     public Base(String stations, int visibility, int id, String name, int cod, Coord coord, Weather weather, Main main, Wind wind, Clouds clouds, Sys sys) {
         this.stations = stations;
@@ -25,9 +33,10 @@ public class Base {
         this.name = name;
         this.cod = cod;
         this.coord = coord;
-        this.weather = weather;
+        this.weather = new ArrayList<>();
         this.main = main;
         this.wind = wind;
+
         this.clouds = clouds;
         this.sys = sys;
     }
@@ -80,14 +89,6 @@ public class Base {
         this.coord = coord;
     }
 
-    public Weather getWeather() {
-        return weather;
-    }
-
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
-
     public Main getMain() {
         return main;
     }
@@ -118,5 +119,13 @@ public class Base {
 
     public void setSys(Sys sys) {
         this.sys = sys;
+    }
+
+    public ArrayList<Weather> getWeather() {
+        return weather;
+    }
+
+    public void setWeather(ArrayList<Weather> weather) {
+        this.weather = weather;
     }
 }

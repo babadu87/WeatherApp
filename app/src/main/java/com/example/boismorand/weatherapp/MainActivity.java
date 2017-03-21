@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 s = sb.toString();
-                //Log.i("ville",s);
+                Log.i("ville",s);
             }
         } catch (IOException e) {
             e.printStackTrace();
