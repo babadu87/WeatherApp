@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".InfoVilleActivity"></activity>
+        <activity android:name=".Autocompl"></activity>
     </application>
 
 </manifest>
