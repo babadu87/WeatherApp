@@ -1,17 +1,16 @@
 package com.example.boismorand.weatherapp;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,26 +21,31 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
+
     private CityAdapter adapter;
 
 
     //declaration des variable search view
+    Button bouton;
+
     ListView listView;
     ListViewAdapter listViewAdapter;
     SearchView searchView;
-    ArrayList <String> ListesVilles = new ArrayList <> ();
+    public static ArrayList <String> ListesVilles = new ArrayList <> ();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String s = getVilles();
-
+        bouton = (Button) findViewById(R.id.search);
         Gson gson = new Gson();
         ArrayList<City> cities= new ArrayList<>();
         Type type = new TypeToken<ArrayList<City>>(){}.getType();
@@ -50,20 +54,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         for (City city:cities) {
             ListesVilles.add(city.getName());
         }
-        // search view
 
         // Localisez le ListView dans listview_main.xml
-        listView = (ListView) findViewById (R.id.listview);
+       // listView = (ListView) findViewById (R.id.listview);
         // résultats Passe à ListViewAdapter Classe
-        listViewAdapter = new ListViewAdapter(this, ListesVilles);
+        //listViewAdapter = new ListViewAdapter(this, ListesVilles);
 
         // Associe l'adaptateur à l'ListView
 
-        listView.setAdapter (listViewAdapter);
+        //listView.setAdapter (listViewAdapter);
 
         // Localisez le EditText dans listview_main.xml
-        searchView = (SearchView) findViewById (R.id.search);
-        searchView.setOnQueryTextListener(this);
+        //searchView = (SearchView) findViewById (R.id.search);
+        //searchView.setOnQueryTextListener(this);
 
 
        /*
@@ -94,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
 
         recyclerView.setAdapter(adapter);
+
+        bouton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Autocompl.class);
+                Log.i("main",ListesVilles.toString());
+                startActivity(intent);
+            }
+        });
+        // search view
 
     }
 
@@ -154,4 +167,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         return s;
     }
+/*
+    public void autocomplete(View view) {
+        Intent intent = new Intent(MainActivity.this, Autocompl.class);
+        //intent.putExtra("Listevilles",ListesVilles);
+        Log.i("main",ListesVilles.toString());
+        startActivity(intent);
+    }*/
 }
