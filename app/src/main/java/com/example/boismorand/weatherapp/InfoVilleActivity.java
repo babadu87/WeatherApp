@@ -1,19 +1,8 @@
 package com.example.boismorand.weatherapp;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +46,7 @@ public class InfoVilleActivity extends Activity implements OnMapReadyCallback{
     private TextView name;
     private TextView country;
     private TextView coord;
+    private TextView desc;
     private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
 
@@ -82,10 +72,13 @@ public class InfoVilleActivity extends Activity implements OnMapReadyCallback{
         location = new Location("location");
         location.setLongitude(city.getCoord().getLongitude());
         location.setLatitude(city.getCoord().getLatitude());
+        desc = (TextView) findViewById(R.id.desc);
 
-        name.setText(city.getName());
-        country.setText(city.getCountry());
-        coord.setText(city.getCoord().toString());
+        name.setText( " Nom de ville : " + city.getName());
+        country.setText("Pays : "+city.getCountry());
+        double lat = city.getCoord().getLatitude();
+        double lon = city.getCoord().getLongitude();
+        coord.setText("Coordonnées :\n latitude = "+lat+", longitude = "+lon+" .");
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -105,14 +98,14 @@ public class InfoVilleActivity extends Activity implements OnMapReadyCallback{
                             //new DownloadImageTask((ImageView) findViewById(R.id.icon)).execute("http://openweathermap.org/img/w/" + meteo.getWeather()[0].getIcon() + ".png");
                             sunset.setTimeInMillis(base.getSys().getSunset() * 1000);
                             sunrise.setTimeInMillis(base.getSys().getSunrise() * 1000);
-                            name.setText("Meteo desc: "+ base.getWeather().get(0).getDescription() + "\n"
-                                    + "Humidity : " + base.getMain().getHumidity() + "%\n"
-                                    + "Pressure : " + base.getMain().getPressure() + " hPa\n"
-                                    + "Temp : " + (base.getMain().getTemp() - 273.15) + " °C\n"
-                                    + "Win Speed : " + base.getWind().getSpeed() + " m/s\n"
-                                    + "Win Dir : " + base.getWind().getDeg() + " (" + base.getWind().getDeg() + ") \n"
-                                    + "Lever soleil : " + sunrise.get(Calendar.HOUR_OF_DAY) + ":" + sunrise.get(Calendar.MINUTE)  + ":" + sunrise.get(Calendar.SECOND) + "\n"
-                                    + "Coucher soleil : " + sunset.get(Calendar.HOUR_OF_DAY) + ":" + sunset.get(Calendar.MINUTE)  + ":" + sunset.get(Calendar.SECOND)  + "\n");
+                            desc.setText("Meteo : "+ traduction(base.getWeather().get(0).getDescription()) + "\n"
+                                    + "\nHumidité : " + base.getMain().getHumidity() + "%\n"
+                                    + "\nPression : " + base.getMain().getPressure() + " hPa\n"
+                                    + "\nTempérature : " + (base.getMain().getTemp() - 273.15) + " °C\n"
+                                    + "\nVitesse de vent : " + base.getWind().getSpeed() + " m/s\n"
+                                    + "\nDirection du vent : " + base.getWind().getDeg() + " (" + base.getWind().getDeg() + ") \n"
+                                    + "\nLever soleil : " + sunrise.get(Calendar.HOUR_OF_DAY) + ":" + sunrise.get(Calendar.MINUTE)  + ":" + sunrise.get(Calendar.SECOND) + "\n"
+                                    + "\nCoucher soleil : " + sunset.get(Calendar.HOUR_OF_DAY) + ":" + sunset.get(Calendar.MINUTE)  + ":" + sunset.get(Calendar.SECOND)  + "\n");
                         }catch (Exception error){name.setText(response + "\n" + error.getMessage());}
                     }
                 }, new Response.ErrorListener() {
@@ -121,10 +114,35 @@ public class InfoVilleActivity extends Activity implements OnMapReadyCallback{
                 Toast.makeText(InfoVilleActivity.this, "Erreur", Toast.LENGTH_LONG).show();
             }
         });
-                queue.add(stringRequest);
+        queue.add(stringRequest);
 
     }
 
+    public String traduction(String desc){
+        if("clear sky".equals(desc.toLowerCase())){
+            return "Le ciel est dégagé";
+        }else if("few clouds".equals(desc.toLowerCase())){
+            return "Il y a quelque nuages";
+        }else if("overcast cloud".equals(desc.toLowerCase())){
+            return "Le ciel est couvert";
+        }else if("scattered clouds".equals(desc.toLowerCase())){
+            return "Il y a des nuages dispersés";
+        }else if("broken clouds".equals(desc.toLowerCase())){
+            return "Il y a des nuages brisés";
+        }else if("shower rain".equals(desc.toLowerCase())){
+            return "Il pleut intensement";
+        }else if("rain".equals(desc.toLowerCase())){
+            return "Il pleut";
+        }else if("thunderstorm".equals(desc.toLowerCase())){
+            return "Il y a des orages";
+        }else if("snow".equals(desc.toLowerCase())){
+            return "Il neige";
+        }else if("mist".equals(desc.toLowerCase())){
+            return "Il y a du brouillard";
+        }else{
+            return desc;
+        }
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;

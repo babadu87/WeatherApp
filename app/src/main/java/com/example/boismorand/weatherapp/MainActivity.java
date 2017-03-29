@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class MainActivity extends AppCompatActivity{
 
     private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     Button bouton;
 
     ListView listView;
-    ListViewAdapter listViewAdapter;
     SearchView searchView;
     public final static ArrayList <String> ListesVilles = new ArrayList <> ();
 
@@ -55,24 +54,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             ListesVilles.add(city.getName());
         }
 
-        // Localisez le ListView dans listview_main.xml
-       // listView = (ListView) findViewById (R.id.listview);
-        // résultats Passe à ListViewAdapter Classe
-        //listViewAdapter = new ListViewAdapter(this, ListesVilles);
 
-        // Associe l'adaptateur à l'ListView
-
-        //listView.setAdapter (listViewAdapter);
-
-        // Localisez le EditText dans listview_main.xml
-        //searchView = (SearchView) findViewById (R.id.search);
-        //searchView.setOnQueryTextListener(this);
-
-
-       /*
-
-        String test = "Forville";
-        Log.i("test",""+ListesVilles.contains(test));*/
         adapter = new CityAdapter(cities,new CityAdapter.OnCityListener(){
             //Ici voir pourquoi ça affiche une seule ville seulement
 
@@ -109,20 +91,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    // fonction pour search view
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        listViewAdapter.filter(text);
-        return false;
-    }
 
     /**
      * return la liste de ville du fichier JSON
