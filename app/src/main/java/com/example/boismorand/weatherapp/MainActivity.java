@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ListView listView;
     ListViewAdapter listViewAdapter;
     SearchView searchView;
-    ArrayList <String> ListesVilles = new ArrayList <> ();
+    public final static ArrayList <String> ListesVilles = new ArrayList <> ();
 
 
 
@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Autocompl.class);
-                intent.putExtra("Listevilles",ListesVilles);
-                Log.i("main",ListesVilles.toString());
                 startActivity(intent);
             }
         });
@@ -168,11 +166,5 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         return s;
     }
-/*
-    public void autocomplete(View view) {
-        Intent intent = new Intent(MainActivity.this, Autocompl.class);
-        //intent.putExtra("Listevilles",ListesVilles);
-        Log.i("main",ListesVilles.toString());
-        startActivity(intent);
-    }*/
+
 }

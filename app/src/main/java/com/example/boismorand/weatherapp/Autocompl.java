@@ -19,13 +19,11 @@ public class Autocompl extends Activity{
         setContentView(R.layout.autocomplete);
         //final ArrayList<String> ListesVilles = getIntent().getParcelableExtra("Listevilles");
 
-        Log.i("Autocompl","coucou");
-/*
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, ListesVilles);
+                android.R.layout.simple_dropdown_item_1line, MainActivity.ListesVilles);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autocomplete);
-        textView.setAdapter(adapter);*/
+        textView.setAdapter(adapter);
 
     }
 }
