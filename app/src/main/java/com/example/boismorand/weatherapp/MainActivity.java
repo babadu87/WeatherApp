@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
         String s = getVilles();
         bouton = (Button) findViewById(R.id.search);
         Gson gson = new Gson();
-        ArrayList<City> cities= new ArrayList<>();
+        cities= new ArrayList<>();
         Type type = new TypeToken<ArrayList<City>>(){}.getType();
         cities = gson.fromJson(s,type);
         Log.i("city",cities.toString());
