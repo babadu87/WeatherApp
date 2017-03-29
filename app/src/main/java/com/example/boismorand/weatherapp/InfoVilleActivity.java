@@ -1,7 +1,16 @@
 package com.example.boismorand.weatherapp;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,27 +25,63 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by Latour on 17/03/2017.
  */
 
-public class InfoVilleActivity extends Activity {
+public class InfoVilleActivity extends Activity implements OnMapReadyCallback{
     private TextView name;
     private TextView country;
     private TextView coord;
     private final static String API_KEY = "44d1e5b3dac1464fea563cc0fd9d8eb0";
 
+
+    private Marker currentPositionMarker;
+    private MapFragment map;
+    private GoogleMap mGoogleMap;
+    private boolean positionUpdated;
+    private Location location;
+    private City city;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_infos);
-        final City city = getIntent().getParcelableExtra("city");
+
+
+
+        map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        map.getMapAsync(this);
+
+        city = getIntent().getParcelableExtra("city");
         name = (TextView) findViewById(R.id.name);
         country = (TextView) findViewById(R.id.country);
         coord = (TextView) findViewById(R.id.coord);
+        location = new Location("location");
+        location.setLongitude(city.getCoord().getLongitude());
+        location.setLatitude(city.getCoord().getLatitude());
 
         name.setText(city.getName());
         country.setText(city.getCountry());
@@ -79,4 +124,22 @@ public class InfoVilleActivity extends Activity {
                 queue.add(stringRequest);
 
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        mGoogleMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
+
+        LatLng initialLoc= mGoogleMap.getCameraPosition().target;
+        LatLng coordinate = new LatLng(city.getCoord().getLatitude(),city.getCoord().getLongitude()); //Store these lat lng values somewhere. These should be constant.
+        CameraUpdate location = CameraUpdateFactory.newLatLngZoom(coordinate, 8);
+        mGoogleMap.animateCamera(location);
+
+        mGoogleMap.addMarker(new MarkerOptions().position(coordinate).title("marker title"));
+    }
+
+
 }

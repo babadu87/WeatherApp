@@ -102,10 +102,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Autocompl.class);
-<<<<<<< HEAD
-=======
-                intent.putExtra("Listevilles",ListesVilles);
->>>>>>> de12e02b8df66d6321e7685bcfdbda67d75b604c
                 Log.i("main",ListesVilles.toString());
                 startActivity(intent);
             }
