@@ -42,12 +42,12 @@ public class Autocompl extends Activity{
         Log.i("test",autoCompleteTextView.getText().toString());
         for(City cityTemp : MainActivity.cities){
             Log.i("test",cityTemp.toString());
-            if(cityTemp.getName().equals(autoCompleteTextView.toString())){
+            if(cityTemp.getName().equals(autoCompleteTextView.getText().toString())){
                 city = cityTemp;
             }
         }
-        Log.i("city",city.toString());
         if(city!=null){
+            Log.i("city",city.toString());
             intent.putExtra("city",city);
             startActivity(intent);
         }
