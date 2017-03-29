@@ -18,7 +18,6 @@ public class Autocompl extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.autocomplete);
         //final ArrayList<String> ListesVilles = getIntent().getParcelableExtra("Listevilles");
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, MainActivity.ListesVilles);
         AutoCompleteTextView textView = (AutoCompleteTextView)
