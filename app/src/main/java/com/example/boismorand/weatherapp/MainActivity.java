@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
     ListView listView;
     SearchView searchView;
     public final static ArrayList <String> ListesVilles = new ArrayList <> ();
-
+    public static ArrayList<City> cities;
 
 
     @Override
